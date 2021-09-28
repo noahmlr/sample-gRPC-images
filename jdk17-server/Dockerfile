@@ -12,6 +12,6 @@ FROM openjdk:17
 #COPY build/libs/jdk17-0.0.1-SNAPSHOT.jar /app.jar
 COPY --from=GRADLE_BUILD build/libs/jdk17-server-0.0.1-SNAPSHOT.jar /app.jar
 
-EXPOSE 50052
+EXPOSE 8080
 
-CMD ["java", "-jar", "/app.jar", "50052"]
+CMD ["java", "-jar", "/app.jar", "8080"]
