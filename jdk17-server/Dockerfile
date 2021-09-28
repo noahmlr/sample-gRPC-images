@@ -9,7 +9,7 @@ RUN ./gradlew clean build
 FROM openjdk:17
 
 #COPY build/libs/jdk17-0.0.1-SNAPSHOT.jar /app.jar
-COPY --from=GRADLE_BUILD build/libs/jdk17-client-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=GRADLE_BUILD build/libs/jdk17-server-0.0.1-SNAPSHOT.jar /app.jar
 
 EXPOSE 50052
 
