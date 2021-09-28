@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url "https://maven-central.storage-download.googleapis.com/maven2/" }
+        maven { url 'https://repo.spring.io/release' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'jdk17-client'
+
