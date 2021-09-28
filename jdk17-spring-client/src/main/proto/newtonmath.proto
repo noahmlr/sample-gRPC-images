@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.noahmlr.grpc.samples";
+option java_outer_classname = "NewtonMathProto";
+option objc_class_prefix = "HLW";
+
+package newtonmath;
+
+service NewtonMath {
+  rpc PerformOperation (MathCalculationRequest) returns (MathCalculationReply) {}
+}
+
+message MathCalculationRequest {
+  string operation = 1;
+  string expression = 2;
+}
+
+message MathCalculationReply {
+  string operation = 1;
+  string expression = 2;
+  string result = 3;
+}

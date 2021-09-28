@@ -9,7 +9,7 @@ public class Main {
             port = Integer.parseInt(args[0]);
         }
 
-        var server = new HelloWorldServer(port);
+        var server = new NewtonMathServer(port);
         server.start();
         server.blockUntilShutDown();
     }
