@@ -1,6 +1,6 @@
 FROM openjdk:17 AS GRADLE_BUILD
 
-COPY ./jdk17-server ./
+COPY ./ ./
 
 RUN ls -a
 RUN java --version
