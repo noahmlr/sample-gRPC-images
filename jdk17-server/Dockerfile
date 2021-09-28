@@ -2,6 +2,7 @@ FROM openjdk:17 AS GRADLE_BUILD
 
 COPY ./ ./
 
+RUN ls -a
 RUN java --version
 RUN chmod +x gradlew
 RUN ./gradlew clean build
