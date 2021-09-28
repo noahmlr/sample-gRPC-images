@@ -2,6 +2,7 @@ package com.noahmlr.grpc.samples;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.protobuf.services.ProtoReflectionService;
 import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class HelloWorldServer {
     public void start() throws IOException {
         server = ServerBuilder.forPort(this.port)
                 .addService(new GreeterImpl())
+                .addService(ProtoReflectionService.newInstance())
                 .build()
                 .start();
         logger.info("Server started, listening on " + port);
