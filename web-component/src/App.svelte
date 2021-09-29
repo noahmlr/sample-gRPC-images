@@ -1,30 +1,62 @@
 <script>
-	export let name;
+	let operations = [
+		{ id: 1, text: "Simplify"},
+		{ id: 2, text: "Factor"},
+		{ id: 3, text: "Derive"},
+		{ id: 4, text: "Integrate"},
+		{ id: 5, text: "Zeroes"}
+	];
+
+	let selected;
+	let promise;
+	let answered = false;
+
+	let expression = '';
+
+	function handleSubmit() {
+		answered = true
+		promise = getAnswer()
+	}
+	
+	async function getAnswer() {
+		let operation = selected.text.toLowerCase()
+		const res = await fetch('http://localhost:8080/calculate', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({operation, expression})
+		})
+		const json = await res.json();
+		console.log(json);
+		return json;
+	}
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<h2>Expression Calculator</h2>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+<form on:submit|preventDefault={handleSubmit}>
+	<select bind:value={selected}>
+		{#each operations as operation}
+			<option value={operation}>
+				{operation.text}
+			</option>
+		{/each}
+	</select>
+	<input bind:value={expression}>
+	<button disabled={!expression} type=submit>
+		Submit
+	</button>
+</form>
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+{#if answered}
+	{#await promise then expressionResult}
+		<div>
+			Result: {expressionResult.result}	
+		</div>
+	{:catch error}
+		<div class="error">
+			Error: {error.message}
+		</div>
+	{/await}
+{/if}
