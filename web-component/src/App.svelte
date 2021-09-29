@@ -48,7 +48,6 @@
 			});
 			if (!res.ok) {
 				addResult({operation, expression, result: "FAILURE"})
-				resetHealthResult();
 				return
 			} 
 			const json = await res.json();
