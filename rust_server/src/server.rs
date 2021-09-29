@@ -18,11 +18,14 @@ impl NewtonMath for MyNewtonMath {
     ) -> Result<Response<MathCalculationReply>, Status> {
         println!("Got a request: {:?}", request);
 
+        let request_data = request.into_inner();
+        let operation = request_data.operation;
+        let expression = request_data.expression;
+
         let reply = newton_math::MathCalculationReply {
-            // message: format!("Hello {}!", request.into_inner().name).into(),
-            operation: String::from("Test"),
-            expression: String::from("Test"),
-            result: String::from("Test"),
+            operation,
+            expression,
+            result: String::from("Placeholder"),
         };
 
         Ok(Response::new(reply))
