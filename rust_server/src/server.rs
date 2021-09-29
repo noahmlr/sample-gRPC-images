@@ -1,25 +1,28 @@
 use tonic::{transport::Server, Request, Response, Status};
 
-use hello_world::greeter_server::{Greeter, GreeterServer};
-use hello_world::{HelloReply, HelloRequest};
+use newton_math::newton_math_server::{NewtonMath, NewtonMathServer};
+use newton_math::{MathCalculationRequest, MathCalculationReply};
 
-pub mod hello_world {
-    tonic::include_proto!("helloworld");
+pub mod newton_math {
+    tonic::include_proto!("newtonmath");
 }
 
 #[derive(Debug, Default)]
-pub struct MyGreeter {}
+pub struct MyNewtonMath {}
 
 #[tonic::async_trait]
-impl Greeter for MyGreeter {
-    async fn say_hello(
+impl NewtonMath for MyNewtonMath {
+    async fn perform_operation(
         &self,
-        request: Request<HelloRequest>,
-    ) -> Result<Response<HelloReply>, Status> {
+        request: Request<MathCalculationRequest>,
+    ) -> Result<Response<MathCalculationReply>, Status> {
         println!("Got a request: {:?}", request);
 
-        let reply = hello_world::HelloReply {
-            message: format!("Hello {}!", request.into_inner().name).into(),
+        let reply = newton_math::MathCalculationReply {
+            // message: format!("Hello {}!", request.into_inner().name).into(),
+            operation: String::from("Test"),
+            expression: String::from("Test"),
+            result: String::from("Test"),
         };
 
         Ok(Response::new(reply))
@@ -29,10 +32,10 @@ impl Greeter for MyGreeter {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "[::1]:50052".parse()?;
-    let greeter = MyGreeter::default();
+    let service = MyNewtonMath::default();
 
     Server::builder()
-        .add_service(GreeterServer::new(greeter))
+        .add_service(NewtonMathServer::new(service))
         .serve(addr)
         .await?;
 

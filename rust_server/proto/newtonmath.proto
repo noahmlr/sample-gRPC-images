@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package newtonmath;
+
+service NewtonMath {
+  rpc PerformOperation (MathCalculationRequest) returns (MathCalculationReply) {}
+}
+
+message MathCalculationRequest {
+  string operation = 1;
+  string expression = 2;
+}
+
+message MathCalculationReply {
+  string operation = 1;
+  string expression = 2;
+  string result = 3;
+}
