@@ -21,7 +21,7 @@ public class NewtonMathClient {
             return futureStub.performOperation(request).get();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Failed to perform calculation", ex);
-            return null;
+            throw new RuntimeException(ex);
         }
     }
 

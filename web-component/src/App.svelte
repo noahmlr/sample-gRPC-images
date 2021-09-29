@@ -11,8 +11,6 @@
 
 	let expression = '';
 
-	let promise;
-	let answered = false;
 	let results = [];
 
 	function handleSubmit() {
@@ -29,7 +27,7 @@
 		console.log(results.length)
 		let operation = selected.text
 		try {
-			const res = await fetch('http://localhost:8080/calculate', {
+			const res = await fetch('localhost:8080/calculate', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
