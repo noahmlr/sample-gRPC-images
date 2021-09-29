@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class NewtonMathClient {
 
     public MathCalculationReply performCalculation(MathCalculationRequest request) {
         try {
-            return futureStub.performOperation(request).get();
+            return futureStub.performOperation(request).get(1000, TimeUnit.MILLISECONDS);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Failed to perform calculation", ex);
             return fallback(request);
