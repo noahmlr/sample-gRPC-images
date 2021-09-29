@@ -8,28 +8,40 @@
 	];
 
 	let selected;
-	let promise;
-	let answered = false;
 
 	let expression = '';
+
+	let promise;
+	let answered = false;
+	let results = [];
 
 	function handleSubmit() {
 		answered = true
 		promise = getAnswer()
 	}
+
+	function addResult(result) {
+		results.push(result)
+		results = results
+	}
 	
 	async function getAnswer() {
-		let operation = selected.text.toLowerCase()
-		const res = await fetch('http://localhost:8080/calculate', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({operation, expression})
-		})
-		const json = await res.json();
-		console.log(json);
-		return json;
+		console.log(results.length)
+		let operation = selected.text
+		try {
+			const res = await fetch('http://localhost:8080/calculate', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({operation: operation.toLowerCase(), expression})
+			});
+			const json = await res.json();
+			console.log(json);
+			addResult({...json, operation});
+		} catch(error){
+			addResult({operation, expression, result: "FAILURE"})
+		}
 	}
 </script>
 
@@ -49,14 +61,20 @@
 	</button>
 </form>
 
-{#if answered}
-	{#await promise then expressionResult}
-		<div>
-			Result: {expressionResult.result}	
-		</div>
-	{:catch error}
-		<div class="error">
-			Error: {error.message}
-		</div>
-	{/await}
+{#if results.length > 0}
+	<h2>Results</h2>
+	<table>
+		<tr>
+			<th>Operation</th>
+			<th>Expression</th>
+			<th>Result</th>
+		</tr>
+		{#each results as {operation, expression, result}}
+			<tr>
+				<td>{operation}</td>
+				<td>{expression}</td>
+				<td>{result}</td>
+			</tr>
+		{/each}
+	</table>
 {/if}
