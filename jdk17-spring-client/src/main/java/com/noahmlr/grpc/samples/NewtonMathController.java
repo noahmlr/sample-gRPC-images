@@ -1,6 +1,8 @@
 package com.noahmlr.grpc.samples;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class NewtonMathController {
@@ -13,8 +15,10 @@ public class NewtonMathController {
 
     @PostMapping("/calculate")
     private MathCalculationResult performCalculation(@RequestBody MathCalculation calculation) {
-        var reply = newtonMathClient.performCalculation(calculation.request());
+        var request = calculation.request();
+        var reply = newtonMathClient.performCalculation(request);
         return new MathCalculationResult(reply.getOperation(), reply.getExpression(), reply.getResult());
+
     }
 
 }
