@@ -1,11 +1,20 @@
 <script>
+
+	import HealthCheck from "./HealthCheck.svelte";
+
+	const appUrl = 'http://jdk17-spring-client-noahmiller-dev.apps.sandbox.x8i5.p1.openshiftapps.com'
+
 	let operations = [
 		{ id: 1, text: "Simplify"},
 		{ id: 2, text: "Factor"},
 		{ id: 3, text: "Derive"},
 		{ id: 4, text: "Integrate"},
-		{ id: 5, text: "Zeroes"}
+		{ id: 5, text: "Zeroes"},
+		{ id: 6, text: "Tangent"},
+		{ id: 7, text: "Area"},
 	];
+
+	let healthResult = '';
 
 	let selected;
 
@@ -14,34 +23,45 @@
 	let results = [];
 
 	function handleSubmit() {
-		answered = true
-		promise = getAnswer()
+		getAnswer()
 	}
 
 	function addResult(result) {
 		results.push(result)
 		results = results
 	}
+
+	function resetHealthResult() {
+		healthResult = ''
+	}
 	
 	async function getAnswer() {
 		console.log(results.length)
 		let operation = selected.text
 		try {
-			const res = await fetch('localhost:8080/calculate', {
+			const res = await fetch(appUrl + '/calculate', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({operation: operation.toLowerCase(), expression})
 			});
+			if (!res.ok) {
+				addResult({operation, expression, result: "FAILURE"})
+				resetHealthResult();
+				return
+			} 
 			const json = await res.json();
 			console.log(json);
 			addResult({...json, operation});
+			resetHealthResult();
 		} catch(error){
 			addResult({operation, expression, result: "FAILURE"})
 		}
 	}
 </script>
+
+<HealthCheck bind:healthResult />
 
 <h2>Expression Calculator</h2>
 
