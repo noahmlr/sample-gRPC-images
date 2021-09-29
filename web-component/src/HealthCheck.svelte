@@ -19,7 +19,14 @@
 </script>
 
 {#if healthResult == 'UNSTABLE'}
-	<div>Client application is currently unstable</div>
+	<div class="error">Client application is currently unstable</div>
 {:else if healthResult == "UNREACHABLE"}
-	<div>Failed to reach client application</div>
+	<div class="error">Failed to reach client application</div>
 {/if}
+
+
+<style>
+    .error {
+        color: red
+    }
+</style>
